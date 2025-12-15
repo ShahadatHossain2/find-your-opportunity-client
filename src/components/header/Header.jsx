@@ -1,6 +1,19 @@
-import React from "react";
+import React, { use, useEffect, useState } from "react";
+import { AuthContext } from "../context/Context";
+import { Link } from "react-router";
 
 const Header = () => {
+  const { user } = use(AuthContext);
+  const [photo, setPhoto] = useState("");
+  useEffect(() => {
+    if (user) {
+      fetch(`http://localhost:5000/users/${user.email}`)
+        .then((res) => res.json())
+        .then((data) => {
+          setPhoto(data.photo);
+        });
+    }
+  }, [user]);
   return (
     <div>
       <div className="navbar border-b">
@@ -20,10 +33,7 @@ const Header = () => {
               className="btn btn-ghost btn-circle avatar"
             >
               <div className="w-10 rounded-full">
-                <img
-                  alt="Tailwind CSS Navbar component"
-                  src="https://img.daisyui.com/images/stock/photo-1534528741775-53994a69daeb.webp"
-                />
+                <img alt="DP" src={photo} />
               </div>
             </div>
             <ul
@@ -31,16 +41,17 @@ const Header = () => {
               className="menu menu-sm dropdown-content bg-base-100 rounded-box z-1 mt-3 w-52 p-2 shadow"
             >
               <li>
-                <a className="justify-between">
-                  Profile
-                  <span className="badge">New</span>
-                </a>
+                <a className="justify-between">Profile</a>
               </li>
               <li>
                 <a>Settings</a>
               </li>
               <li>
-                <a>Logout</a>
+                {user ? (
+                  <Link className="btn">Logout</Link>
+                ) : (
+                  <Link to="/login">Login</Link>
+                )}
               </li>
             </ul>
           </div>

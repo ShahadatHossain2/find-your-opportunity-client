@@ -1,11 +1,36 @@
 import React, { useEffect, useRef } from "react";
 import { FaArrowLeft } from "react-icons/fa";
-import { useNavigate } from "react-router";
+import { useLoaderData, useNavigate } from "react-router";
 import Pikaday from "pikaday";
 import Swal from "sweetalert2";
 
-const AddJob = () => {
+const UpdateJob = () => {
+  const { _id, company, title, salary, type, description, deadline } =
+    useLoaderData();
   const navigate = useNavigate();
+  const handleUpdate = (e) => {
+    e.preventDefault();
+    const formData = new FormData(e.target);
+    const updatedInfo = Object.fromEntries(formData.entries());
+    console.log(updatedInfo);
+    fetch(`http://localhost:5000/jobs/${_id}`, {
+      method: "PUT",
+      headers: {
+        "content-type": "application/json",
+      },
+      body: JSON.stringify(updatedInfo),
+    })
+      .then((res) => res.json())
+      .then((data) => {
+        if (data.modifiedCount) {
+          Swal.fire({
+            title: "Successfully Updated!",
+            icon: "success",
+          });
+        }
+        console.log(data);
+      });
+  };
   const myDatepicker = useRef(null);
   useEffect(() => {
     const picker = new Pikaday({
@@ -13,31 +38,6 @@ const AddJob = () => {
     });
     return () => picker.destroy();
   }, []);
-  const handleAddJob = (e) => {
-    e.preventDefault();
-    const form = e.target;
-    const formData = new FormData(form);
-    const jobDetails = Object.fromEntries(formData.entries());
-    console.log(jobDetails);
-    fetch("http://localhost:5000/jobs", {
-      method: "POST",
-      headers: {
-        "content-type": "application/json",
-      },
-      body: JSON.stringify(jobDetails),
-    })
-      .then((res) => res.json())
-      .then((data) => {
-        console.log(data);
-        Swal.fire({
-          position: "top-end",
-          icon: "success",
-          title: "Your work has been saved",
-          showConfirmButton: false,
-          timer: 1500,
-        });
-      });
-  };
   return (
     <div className="bg-blue-100 p-4 rounded mt-2 ">
       <button
@@ -48,16 +48,16 @@ const AddJob = () => {
       </button>
 
       <h3 className="text-2xl my-5 font-bold text-white">
-        Add Your Vacancy Post
+        Update Your Vacancy Post
       </h3>
-      <form onSubmit={handleAddJob}>
+      <form onSubmit={handleUpdate}>
         <fieldset className="fieldset">
           <legend className="fieldset-legend">Company Name</legend>
           <input
             type="text"
             className="input md:w-1/2"
             name="company"
-            placeholder="Type here"
+            defaultValue={company}
           />
         </fieldset>
         <fieldset className="fieldset">
@@ -66,7 +66,7 @@ const AddJob = () => {
             type="text"
             className="input md:w-1/2"
             name="title"
-            placeholder="Type here"
+            defaultValue={title}
           />
         </fieldset>
         <fieldset className="fieldset">
@@ -75,15 +75,12 @@ const AddJob = () => {
             type="text"
             className="input md:w-1/2"
             name="salary"
-            placeholder="Type here"
+            defaultValue={salary}
           />
         </fieldset>
         <fieldset className="fieldset">
           <legend className="fieldset-legend">Job type</legend>
-          <select className="select md:w-1/2" name="type">
-            <option disabled selected>
-              --Select--
-            </option>
+          <select className="select md:w-1/2" name="type" defaultValue={type}>
             <option>Full-time</option>
             <option>Intern</option>
             <option>Part-Time</option>
@@ -93,7 +90,7 @@ const AddJob = () => {
           <legend className="fieldset-legend">Job Description</legend>
           <textarea
             className="textarea md:w-1/2"
-            placeholder="Type Here"
+            defaultValue={description}
             name="description"
           ></textarea>
         </fieldset>
@@ -101,20 +98,20 @@ const AddJob = () => {
           <legend className="fieldset-legend">Last application date</legend>
           <input
             type="text"
-            className="input pika-single"
+            className="input pika-single md:w-1/2"
             name="deadline"
-            defaultValue="Pick a date"
+            defaultValue={`${deadline}`}
             ref={myDatepicker}
           />
         </fieldset>
         <input
           className="btn mt-2 md:w-1/2 rounded"
           type="submit"
-          value="Submit"
+          value="Update"
         />
       </form>
     </div>
   );
 };
 
-export default AddJob;
+export default UpdateJob;
