@@ -16,7 +16,9 @@ export const router = createBrowserRouter([
       {
         index: true,
         loader: () =>
-          fetch("http://localhost:5000/jobs").then((res) => res.json()),
+          fetch(
+            "https://find-your-opportunity-server-2.onrender.com/jobs"
+          ).then((res) => res.json()),
         element: <Home></Home>,
       },
       {
@@ -26,7 +28,9 @@ export const router = createBrowserRouter([
       {
         path: "jobDetails/:id",
         loader: ({ params }) =>
-          fetch(`http://localhost:5000/jobs/${params.id}`),
+          fetch(
+            `https://find-your-opportunity-server-2.onrender.com/jobs/${params.id}`
+          ),
         element: (
           <PrivateRoute>
             <JobDetails></JobDetails>
@@ -36,7 +40,9 @@ export const router = createBrowserRouter([
       {
         path: "jobUpdate/:id",
         loader: ({ params }) =>
-          fetch(`http://localhost:5000/jobs/${params.id}`),
+          fetch(
+            `https://find-your-opportunity-server-2.onrender.com/jobs/${params.id}`
+          ),
         element: (
           <PrivateRoute>
             <UpdateJob></UpdateJob>
@@ -45,12 +51,18 @@ export const router = createBrowserRouter([
       },
       {
         path: "login",
+        loader: () =>
+          fetch(
+            "https://find-your-opportunity-server-2.onrender.com/users"
+          ).then((res) => res.json()),
         Component: Login,
       },
       {
         path: "signUp",
         loader: () =>
-          fetch("http://localhost:5000/users").then((res) => res.json()),
+          fetch(
+            "https://find-your-opportunity-server-2.onrender.com/users"
+          ).then((res) => res.json()),
         Component: SignUp,
       },
     ],

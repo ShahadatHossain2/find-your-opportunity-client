@@ -6,7 +6,7 @@ import { FaArrowLeft } from "react-icons/fa";
 
 const SignUp = () => {
   const allUsers = useLoaderData();
-  const { createUser, signInWithGoogle } = use(AuthContext);
+  const { createUser, signInWithGoogle, sendVerification } = use(AuthContext);
   const navigate = useNavigate();
   const handleGoogleSignUp = () => {
     signInWithGoogle()
@@ -19,7 +19,7 @@ const SignUp = () => {
           lastSignInTime: result.user?.metadata?.lastSignInTime,
         };
         if (!allUsers.find((user) => user.email === googleUser.email)) {
-          fetch("http://localhost:5000/users", {
+          fetch("https://find-your-opportunity-server-2.onrender.com/users", {
             method: "POST",
             headers: {
               "content-type": "application/json",
@@ -57,25 +57,27 @@ const SignUp = () => {
           creationTime: result.user?.metadata?.creationTime,
           lastSignInTime: result.user?.metadata?.lastSignInTime,
         };
-        if (!allUsers.find((user) => user.email === email)) {
-          fetch("http://localhost:5000/users", {
-            method: "POST",
-            headers: {
-              "content-type": "application/json",
-            },
-            body: JSON.stringify(newUser),
-          })
-            .then((res) => res.json())
-            .then((data) => {
-              if (data.insertedId) {
-                Swal.fire({
-                  title: "Successfully Created!",
-                  icon: "success",
-                });
-                navigate("/");
-              }
-            });
-        }
+        sendVerification().then(() => {
+          if (!allUsers.find((user) => user.email === email)) {
+            fetch("https://find-your-opportunity-server-2.onrender.com/users", {
+              method: "POST",
+              headers: {
+                "content-type": "application/json",
+              },
+              body: JSON.stringify(newUser),
+            })
+              .then((res) => res.json())
+              .then((data) => {
+                if (data.insertedId) {
+                  Swal.fire({
+                    title: "Verification Email Send! Please Check!!.",
+                    icon: "success",
+                  });
+                  navigate("/login");
+                }
+              });
+          }
+        });
       })
       .catch((error) => {
         Swal.fire({
@@ -86,7 +88,7 @@ const SignUp = () => {
       });
   };
   return (
-    <div className="mt-10">
+    <div className="my-10">
       <Link
         to="/"
         className="flex items-center  gap-1 text-blue-400 hover:text-green-200 font-bold"

@@ -13,7 +13,7 @@ const UpdateJob = () => {
     const formData = new FormData(e.target);
     const updatedInfo = Object.fromEntries(formData.entries());
     console.log(updatedInfo);
-    fetch(`http://localhost:5000/jobs/${_id}`, {
+    fetch(`https://find-your-opportunity-server-2.onrender.com/jobs/${_id}`, {
       method: "PUT",
       headers: {
         "content-type": "application/json",
