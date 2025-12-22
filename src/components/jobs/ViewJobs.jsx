@@ -25,12 +25,9 @@ const ViewJobs = ({ job }) => {
       confirmButtonText: "Yes, delete it!",
     }).then((result) => {
       if (result.isConfirmed) {
-        fetch(
-          `https://find-your-opportunity-server-2.onrender.com/jobs/${_id}`,
-          {
-            method: "DELETE",
-          }
-        )
+        fetch(`http://localhost:5000/jobs/${_id}`, {
+          method: "DELETE",
+        })
           .then((res) => res.json())
           .then((data) => {
             Swal.fire({
@@ -45,7 +42,7 @@ const ViewJobs = ({ job }) => {
   };
   return (
     <div>
-      <div className=" rounded-xl p-4 border border-cyan-50 shadow shadow-cyan-200">
+      <div className="bg-white hover:bg-blue-100 rounded-xl p-4 border border-cyan-50 shadow shadow-cyan-200">
         <h3 className="text-xl font-bold">{company} is Hiring</h3>
         <div className="text-gray-600">
           <p>

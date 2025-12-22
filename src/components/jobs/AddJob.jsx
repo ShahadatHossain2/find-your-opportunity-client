@@ -19,7 +19,7 @@ const AddJob = () => {
     const formData = new FormData(form);
     const jobDetails = Object.fromEntries(formData.entries());
     console.log(jobDetails);
-    fetch("https://find-your-opportunity-server-2.onrender.com/jobs", {
+    fetch("http://localhost:5000/jobs", {
       method: "POST",
       headers: {
         "content-type": "application/json",

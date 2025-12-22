@@ -1,7 +1,7 @@
 import React from "react";
 import { FaArrowLeft, FaCalendarCheck } from "react-icons/fa";
 import { MdDescription } from "react-icons/md";
-import { useLoaderData, useNavigate, useNavigation } from "react-router";
+import { Link, useLoaderData, useNavigate, useNavigation } from "react-router";
 
 const JobDetails = () => {
   const { _id, company, title, salary, type, description, deadline } =
@@ -12,7 +12,7 @@ const JobDetails = () => {
     return <span>Loading...</span>;
   }
   return (
-    <div className="">
+    <div className="mb-10">
       <button
         onClick={() => navigate(-1)}
         className="flex items-center cursor-pointer gap-1 hover:text-blue-500"
@@ -40,6 +40,9 @@ const JobDetails = () => {
             <span className="font-bold">Deadline: </span> {deadline}
           </p>
         </div>
+        <Link className="btn btn-sm text-white bg-blue-400 font-bold">
+          Apply
+        </Link>
       </div>
     </div>
   );

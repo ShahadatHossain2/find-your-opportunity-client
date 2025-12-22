@@ -7,6 +7,8 @@ import UpdateJob from "../jobs/UpdateJob";
 import Login from "../authentication/Login";
 import SignUp from "../authentication/SignUp";
 import PrivateRoute from "./PrivateRoute";
+import User from "../users/User";
+import User2 from "../users/user2";
 
 export const router = createBrowserRouter([
   {
@@ -16,9 +18,7 @@ export const router = createBrowserRouter([
       {
         index: true,
         loader: () =>
-          fetch(
-            "https://find-your-opportunity-server-2.onrender.com/jobs"
-          ).then((res) => res.json()),
+          fetch("http://localhost:5000/jobs").then((res) => res.json()),
         element: <Home></Home>,
       },
       {
@@ -28,9 +28,7 @@ export const router = createBrowserRouter([
       {
         path: "jobDetails/:id",
         loader: ({ params }) =>
-          fetch(
-            `https://find-your-opportunity-server-2.onrender.com/jobs/${params.id}`
-          ),
+          fetch(`http://localhost:5000/jobs/${params.id}`),
         element: (
           <PrivateRoute>
             <JobDetails></JobDetails>
@@ -40,9 +38,7 @@ export const router = createBrowserRouter([
       {
         path: "jobUpdate/:id",
         loader: ({ params }) =>
-          fetch(
-            `https://find-your-opportunity-server-2.onrender.com/jobs/${params.id}`
-          ),
+          fetch(`http://localhost:5000/jobs/${params.id}`),
         element: (
           <PrivateRoute>
             <UpdateJob></UpdateJob>
@@ -52,18 +48,26 @@ export const router = createBrowserRouter([
       {
         path: "login",
         loader: () =>
-          fetch(
-            "https://find-your-opportunity-server-2.onrender.com/users"
-          ).then((res) => res.json()),
+          fetch("http://localhost:5000/users").then((res) => res.json()),
         Component: Login,
       },
       {
         path: "signUp",
         loader: () =>
-          fetch(
-            "https://find-your-opportunity-server-2.onrender.com/users"
-          ).then((res) => res.json()),
+          fetch("http://localhost:5000/users").then((res) => res.json()),
         Component: SignUp,
+      },
+      {
+        path: "users",
+        element: (
+          <PrivateRoute>
+            <User></User>
+          </PrivateRoute>
+        ),
+      },
+      {
+        path: "users2",
+        element: <User2></User2>,
       },
     ],
   },

@@ -1,7 +1,7 @@
 import React from "react";
 
-const DeleteJob = () => {
+const AppliedJob = () => {
   return <div></div>;
 };
 
-export default DeleteJob;
+export default AppliedJob;

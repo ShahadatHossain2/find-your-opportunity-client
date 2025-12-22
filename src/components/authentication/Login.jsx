@@ -37,7 +37,7 @@ const Login = () => {
           lastSignInTime: result.user?.metadata?.lastSignInTime,
         };
         if (!allUsers.find((user) => user.email === googleUser.email)) {
-          fetch("https://find-your-opportunity-server-2.onrender.com/users", {
+          fetch("http://localhost:5000/users", {
             method: "POST",
             headers: {
               "content-type": "application/json",
